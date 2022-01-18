@@ -1,0 +1,274 @@
+Linux Sunucu Güvenliği
+
+Linux; kararlı çekirdeği, ağ yazılımlarının çeşitliliği ve kalitesi, performans/maliyet eğrisindeki konumu nedeni ile günümüzün en çok tercih edilen ağ işletim sistemlerinden olmuştur. Dışarıdan ve içeriden gelebilecek tehlikelere karşı gerekli önlemler alınmış bir Linux kurulu makine yıllarca hiç sorun çıkartmadan çalışabilmesine rağmen, her zaman için bunun aksi de mümkündür. Güvenlik ile ilgilenen herkesin bileceği gibi kesinlikle güvenli denilecek bir sistem tasarlanması mümkün değildir.
+
+Güvenli bir işletim sistemi 
+Güvenlik, ciddiyet isteyen bir iştir. Tasarımına ilk aşamada yani, sunucunun kurulumundan önce başlanması gereklidir. Bilgisayarın ne amaçlı kullanılacağı bir çizelge üzerinde belirlenmeli ve temel işlevi dışında hiçbir yazılımın makine üzerinde bulunmasına izin verilmemelidir. Unutmamalıyız ki, hatasız bir program yoktur. Makine üzerinde ne kadar az program bulunursa, hatalardan etkilenme riskimiz de aynı derecede azalır. 
+
+Eğer sunucumuz üzerinde çok önemli bilgi bulunduruyorsak RAID kontrol kartları bulunması kaçınılmazdır. Ayrıca yazılımın her ihtimale karşı düzenli olarak yedeklenmesi ve yedeklenmenin de mümkünse ayrı bir optik veya manyetik medya üzerine yapılması tercih edilmelidir. 
+
+Güvenli bir Linux sistemin kurulumu 
+Linux kurulumunda deneyimli bir kullanıcı, her Linux sürümünün kurulum programında bulunan tipik sunucu veya istemci seçeneklerinden birisini tercih etmemelidir. Eğer bilgisayarınızda tam bir hakimiyet kurmak ve üzerinde bulunan her yazılımın varlığından haberdar olmak istiyorsanız kurulacak bütün bileşenleri sizin seçmeniz gereklidir. 
+
+Kurulum sırasında /var, /usr, /home dizinlerini ayrı disklere bağlamak genelde doğru bir yaklaşımdır. Bu sayede diskin yedeğinin alınması kolaylaşmakta ve disklerden birinde oluşacak bir hata sonucunda kaybedilen verinin minimuma indirilmesi sağlanacaktır. 
+
+Eğer sunucuda maksimum güvenlik gerekli ise, Xwindows bileşenlerinin kurulmaması doğru bir karar olacaktır. Xwindows sistemi, bir istemci makinede işlemleri kolaylaştırmasına rağmen, çok büyük kod yapısı ve kodunda bulunması muhtemel onlarca hatadan dolayı çok büyük bir risk taşımaktadır. 
+
+Elinizdeki Linux sürümünü çok iyi tanımalı, eğer ihtiyacınız olan sunucu yazılımlar bu sürüm ile birlikte geliyorsa onları sisteminize kurmadan önce versiyonları hakkında ayrıntılı bilgi edinmelisiniz. Örnek vermek gerekirse: Red Hat Linux 6.2 işletim sistemi kurulacaksa, bu sürüm ile birlikte gelen FTP sunucu paketi olan wu-ftpd-2.6.0 paketinde bulunan bazı güvenlik açıkları ve bunlardan faydalanan exploitler nedeni ile yeni kurduğunuz Linux sunucu birkaç dakika içinde kötü niyetli bir kişi tarafından ele geçirilebilir. Tavsiyemiz, az önce hazırlamanızı tavsiye ettiğimiz sunucunun görevi başlıklı listenize sizin için gerekli olacak yazılımlar listesini de ekleyerek sırası ile bu yazılımların Internet’teki ana sayfalarına göz atmanızdır. Örneğin az önce söz ettiğimiz Red Hat 6.2’ deki güvenlik boşluğuna karşı wu- ftpd-2.6.1 sürümü kullanılmasının gerekliliği, sitenin ana sayfasında önemle duyurulmaktadır. 
+
+Şimdi, Linux sunucularda yaygın olarak kullanılan bazı ağ servisleri ve bunlar hakkında en güncel bilgilerin bulunduğu Internet sitelerini listeleyelim. 
+ 
+
+
+
+Yukarıdaki web sitelerini ziyaret ederken, elinizdeki Linux sürümündeki yazılımların versiyonlarını kontrol ettiğinizde büyük ihtimalle en son sürüme sahip olmadığınızı göreceksiniz. Bu aşamada en doğru hareket, ilgili paketin tar.gz uzantılı kaynak kodunu sunucu makineye kopyalayıp, kodu derlemektir. Pek çoğumuza zahmetli gelen kod derlemeye başvurmamızın nedeni, yazılımların kaynak kod olarak dağıtılması ile rpm veya deb paketi olarak dağıtılmasına başlanması arasında geçen sürede sunucumuzun tehdit edilmesini istemememizdir. 
+
+Güvenliği maksimize etmek için bir diğer önemli nokta da makinede C, C++ derleyici bulundurulmamasıdır. Eğer ileride bir gün gerekirse geçici olarak kurulması ve ardından tekrar kaldırılması doğru olacaktır. Bunun nedeni, makineye erişen kullanıcıların işletim sistemine zarar verebilecek bazı kodları derlemesini engellemektir. Ayrıca, çekirdek (kernel) kaynak kodunun da sistemde bulunması bazı tehlikeler ortaya çıkarabilir. Bunun nedeni ise bazı alt seviye güvenlik kırıcı programların kernel’ daki C++ başlık dosyalarını kullanarak sistemde root kullanıcı hakkına sahip olmayı başarmasıdır. Bunu engellemek için en iyi yol, Linux çekirdeğinin kaynak kodunun sistemde bulunmamasıdır. 
+
+Kurulduktan sonra silinecek bileşenler. 
+Linux sisteminizi kurduktan sonra ilk yapılması gereken, bazı tehlikeli paketlerin sistemde bulunup bulunmadıklarının kontrolü olmalıdır. Tipik bir sunucuda aşağıda listelenen programların bulunması ya gereksizdir, ya da bir güvenlik boşluğu teşkil etmektedir. Bu nedenle özellikle gerekli değilse silinmeleri daha akıllıca olacaktır. 
+
+git ve mc 
+rsh, rlogin, rcp, rdate, rdist, rusers, rwall, rwho 
+ntalk, talk 
+telnet sunucu 
+Xwindows ile ilgili her türlü program 
+KDE, QT kütüphaneleri 
+C, C++, tk, derleyici ve yorumlayıcıları 
+Snmpd yazılımı 
+NFS ve NIS ile ilgili her şey. 
+routed 
+tftp 
+Grafik ile alakalı her şey. 
+piranha, linuxconf 
+at 
+Multimedia ile ilgili her şey 
+Pump 
+mt-st 
+eject 
+mailcap 
+apmd 
+kernel-pcmcia-cs 
+getty_ps 
+isapnptools 
+setserial 
+kudzu 
+gd 
+pciutils 
+rmt 
+Yukarıdaki liste ile paranoyaklık boyutuna ulaşmış olabiliriz fakat hepimiz biliyoruz ki, güvenlik ciddi derecede paranoyaklık gerektirir. 
+Ayrıca yukarıdaki listede yer almayan ve makinenize kuracağınızı varsaydığımız Apache, wu- ftpd, bind, sendmail gibi programları da şimdi sisteminizden kaldırmanız ve kaynak kodlarından derlemeniz tavsiye edilir. 
+
+Kullanıcı hesapları 
+Bir bilgisayar sisteminin kırılmasında izlenen yolların büyük çoğunluğu, makine üzerinde geçerli bir kullanıcı hesabına sahip olunmasından geçer. Güvenlik açıklarından faydalanmayı amaçlayan kötü niyetli kişiler bu sunucu üzerinde bulunan hesaplardan bir tanesini eline geçirdiğinde işi büyük ölçüde kolaylaşmaktadır. Bu nedenle ana makine üzerindeki bütün şifrelerin en az root kullanıcının şifresi kadar iyi korunması gereklidir. 
+
+Sistemde kullanılan şifrelerin genel özelliklerini kısıtlamak mümkündür. Örneğin sistemdeki bütün şifrelerin minimum 5 karakter ile kısıtlı olması sağlanabilir. Bunun için /etc/login.defs dosyasına PASS_MIN_LEN n gibi bir ibare girilmesi gereklidir. Buradaki n sayısı şifrelerin minimum uzunluğunu belirtmektedir. 
+
+Çok sık yapılan hatalardan bir tanesi de bir kullanıcının sisteme bağlanması ve uzun süre bağlı kalmasıdır. Bunu engellemek için de /etc/profiles dosyası içerisine TMOUT =7200 yazılması bağlı olan kullanıcının hiçbir işlem yapmadan geçirdiği 7200 saniye sonunda otomatikman sistemden atılmasını sağlar. 
+
+/etc/exports dosyası 
+Sisteminizde NFS, NIS gibi bir sistem kullanılmıyorsa, ki kullanılması pek tavsiye edilmez, /etc/exports dosyası içersinde herhangi bir şey olması gerekli değildir. Bu dosya NFS sunucular için paylaştırılacak dizinleri belirtir. Eğer NFS kullanılacaksa buradaki paylaşım listesi aşağıdakine benzer bir yapıda olmalıdır. 
+
+/paylaştırılacak/dizin1 yetkili.makine.com.tr(ro,root_squash) 
+/paylaştırılacak/dizin2 192.168.10.4(ro,root_squash) 
+
+Yukarıdaki dosyada ro seçeneği, bu paylaşımın salt okunur olduğunu, root_squash seçeneği ise root kullanıcı yazma haklarına sahip herhangi bir koşulun olamayacağı anlamına gelir. 
+
+/etc/security/console.apps/ dizini 
+Red Hat Linux sistemlerde normal kullanıcıların makineyi kapatmak, yeniden açmak vb... özel haklara sahip olmalarını sağlayan bazı dosyalar bulunur. Bu dosyalar, /etc/security/console.apps dizininde bulunur. Buradaki bazı dosyaları silmek bizi beklenmedik sürprizlere karşı koruyacaktır. Aşağıdaki komutlar ile gereksiz bazı dosyaları temizleyelim. 
+
+rm –f /etc/security/console.apps/halt 
+rm –f /etc/security/console.apps/poweroff 
+rm –f /etc/security/console.apps/reboot 
+rm –f /etc/security/console.apps/shutdown 
+
+Eğer sistemde root kullanıcı harici kimsenin Xwindows sistemini kullanmamasını istiyorsak yine rm –f /etc/security/console.apps/ dizini içindeki xserver dosyasını da silmemiz yeterli olacaktır. 
+
+/etc/pam.d/ dizini 
+Bir diğer güvenlik artırımı da pam.d sisteminde sağlanabilir. Red Hat sistemlerde /etc/pam.d dizininde bulunan betikler, yazılımların kullanıcıları nasıl yetkilendireceğini düzenler. Aşağıdaki komutları verdiğiniz takdirde kullanıcılar tehlikeli sayılabilecek bazı konsol haklarından mahrum edileceklerdir.
+
+cd /etc/pam.d for i in * ; do sed ’/[^#].*pam_console.so/s/^/#/’ <$i> temp && mv temp $i done
+
+
+
+/etc/inetd.conf dosyası 
+Bu dosya Linux makinenizin sunucu yazılımlarının pek çoğunu kontrol eder. Arka planda çalışan inetd adlı yazılım, bu dosyada belirtilen portlarda gelen istekleri dinleyerek bir istek karşısında yine bu dosyada belirtilen programın bir kopyasını çalıştırır. Bu şekilde hiç kullanılmayan ya da az kullanılan bazı sunucu yazılımların bellekte gereksiz yer kaplamaları engellenmiş olur. 
+
+Dosyanın temel yapısı şu şekildedir. 
+
+ftp stream tcp nowait root /usr/sbin/tcpd in.ftpd -l –a 
+telnet stream tcp nowait root /usr/sbin/tcpd in.telnetd 
+
+Bu dosya, sisteminizin güvenliği için en önemli dosyalardandır. Gerekli olmayan her şeyi kapatmalısınız. Örneğin makine ftp sunucu olarak kullanılmayacak ise yapılması gereken en doğru hareket ilgili satırın başına bir diyez (#) işareti koyarak bu servisi aktif halden kaldırmak olacaktır. Elbette ki bu servis kullanılmıyorsa, aynı zamanda makineden silmek doğru bir harekettir. Eğer bir servisin işe yarayıp yaramadığı hakkında tereddüde düşüyorsanız, o servisi kaldırın. Büyük ihtimalle işinize yaramayacaktır. Burada açık bırakacağınız her bir satır size bir güvenlik boşluğu olarak geri dönecektir. Örnek vermek gerekirse çok zararsız gibi görünen "echo" servisi, bu porta gönderilen her bilgiyi aynen geri göndermekle görevlidir. Eğer kötü niyetli birisi bu porta, sürekli işe yaramaz bilgi gönderen bir yazılım yazarsa, bu servis gelen saçma sapan karakterlerin hepsine birden cevap vermek isterken sistem kaynaklarının çok önemli bir kısmını tüketecektir. Aynı programın bir worm tarzında yazıldığını ve Internet üzerinde binlerce makineden aynı anda saçma sapan karakterler gönderildiğini varsayarsanız, sunucunuz büyük ihtimalle göçecektir. 
+
+Bir diğer önemli madde ise her ihtimale karşı /etc/inetd.conf dosyasının haklarını kontrol etmeliyiz. Bu dosyanın hakları 600 yani sadece root kullanıcı tarafından okunabilir ve yazılabilir şekilde olmalıdır. Bu, aşağıdaki komut ile sağlanabilir. 
+
+chmod 600 /etc/inetd.conf 
+
+Bu dosyanın içeriğinden emin olunduktan sonra, bir daha root kullanıcı dahil kimse tarafından değiştirilmemesi için şu komut verilmelidir. 
+
+chattr +i /etc/inetd.conf 
+
+/etc/hosts.deny dosyası 
+Bu dosya, ağ servislerinize ulaşmaya yetkili kullanıcıları kısıtlamaya yarar. Genellikle bu dosya içinde herkese bütün yetkiler kısıtlanır. Ardından sisteme girmeye yetkili IP adresi veya bilgisayar adları /etc/hosts.allow dosyası içinde belirlenir. 
+
+Aşağıda standart bir /etc/hosts.deny dosyası görünmektedir. 
+
+# Bütün erişim haklarını kapat!!!... 
+ALL:ALL 
+
+/etc/hosts.allow dosyası 
+Bu dosya, /etc/hosts.deny dosyasında tamamen kapattığınız erişim haklarını bazı yetkili bilgisayarlara iade etmek için kullanılır. Örneğin sunucu makinenize sadece trlinux.com (195.244.37.241) alan adından ve sadece sshd adlı protokol ile erişilmesini istiyorsanız, bu dosyada aşağıdaki değişiklikleri yapmalısınız. 
+
+sshd: 195.244.37.241 trlinux.com 
+
+/etc/issue ve /etc/issue.net dosyaları 
+Bu dosyalar, sisteminize konsoldan veya telnet yolu ile bağlanmak isteyen kişilere login: belirtkecinden önce gösterilen bilgi satırlarını içerirler. Bu, genelde kişiyi kullandığı sistemin bir Linux sistem olduğunu göstermesi açısından faydalı olabilir fakat, yüksek güvenlik gerektiren sistemlerde kullanılan işletim sistemi, kullanılan çekirdek(kernel) gibi bilgilerin kötü niyetli kişilerin eline geçmesi doğru değildir. Bu nedenle /etc/inetd.conf dosyasında telnet programını çalıştıran satırda in.telnetd sonuna –h parametresinin eklenmesi bu bilgilerin ekrana getirilmemesini sağlar. 
+
+telnet protokolü, bir makineye uzaktan erişim amaçlı kullanılır ve üzerinden akan bilgiyi şifrelemeden gönderdiği için güvenli bir makinede bulunması kesinlikle tavsiye edilmez. Şifrelenmeden yollanan her türlü bilgi, bir sniffer yazılımı aracılığı ile rahatlıkla dinlenebilir. Bunu engellemek için ssh adı verilen protokolü tercih etmelisiniz. 
+
+/etc/services 
+Bu dosya, bir portta bağlanacak olan programa bir isim vermek amaçlı kullanılır. Örneğin 65000 nolu portu kullanan ve inetd aracılığı ile bu portu dinleyen bir Netbus tarzı bir worm programı yazılmak istendiğinde yapılması gereken, /etc/services dosyasında bu porta bir isim vermek ve /etc/inetd.conf dosyasında verilen ismi içeren ve bu porttaki istekleri işleyen bir program yazılması yeterlidir. 
+
+Bunu engellemek için bu dosyada değişiklik yapmayı engelleyen şu komutun verilmesi yeterlidir. 
+
+chattr +i /etc/services 
+
+/etc/securetty dosyası 
+Bu dosya root kullanıcının sisteme direk login belirtecinde kullanıcı adı ve şifresini girerek bağlanabileceği terminal aygıtlarını listeler. Bu dosya silindiği takdirde sisteme telnet ile bağlanan herkes kullanıcı adı olarak root verebilir. Bu çok büyük bir güvenlik açığıdır. Yapılması gereken eğer bu dosya yerinde yoksa yaratılması ve içine "tty1" yazılmasıdır. Bu sayede root kullanıcı sadece bilgisayarın önünde iken ve 1 nolu sanal terminali kullanırken sisteme direk bağlanabilir. 
+
+/etc/passwd ve /etc/shadow dosyaları 
+passwd ve shadow dosyaları birlikte, kullanıcı şifreleri ve hesapları hakkında ayrıntılı bilgiyi barındırır. Bu nedenle korunmasına özel önem verilmelidir. Internet’ te yer alan pek çok hack- warez sitesinde, bir Linux sistemi kırmakla ilgili dokümanda bu dosyaların bir şekilde ele geçirilmesi ve ardından bir brute force programı yazılımı ile bu şifrenin güçlü bir bilgisayarda deneme yanılma yöntemi ile kırılması anlatılmaktadır. Bunun önüne geçmek gerçekten çok kolaydır. Yapılması gereken /etc/shadow dosyasının okuma haklarını normal kullanıcılardan kaldırmak olmalıdır. Bu işlem şu komutla gerçekleştirilir. 
+
+chmod 600 /etc/shadow 
+
+Kullanıcıların su komutu ile root kullanıcı olmalarının engellenmesi 
+su komutu herhangi bir kullanıcının root şifresini bildiği takdirde root kullanıcı haklarına sahip olmasını sağlar. Bu çok büyük bir güvenlik riskidir, fakat engellemek mümkündür. /etc/pam.d/su dosyasının en tepesine aşağıdaki satırları eklediğimiz takdirde sadece wheel adlı ön tanımlı gruba üye olan kullanıcılar su komutunu çalıştırarak root kullanıcı haklarına sahip olabilirler. 
+
+auth sufficient /lib/security/pam_rootok.so debug 
+auth required /lib/security/pam_wheel.so group=wheel 
+
+Artık sistemimizde wheel grubuna üye olmayan hiçbir kullanıcı root haklarına sahip olamayacaktır. Wheel grubuna aşağıdaki komut ile kolayca umut adlı bir kullanıcı eklenebilir. 
+
+chmod –G10 umut 
+
+Kullanıcıların CPU ve RAM kullanımlarını sınırlamak 
+Bu Linux’ un çok gelişmiş özelliklerinden bir tanesidir. Sisteme bağlanan kullanıcılara herhangi bir kaynak limiti verilmediği takdirde sistemi kırmak için özelleşmiş bazı programları çalıştırarak sistemi meşgul etmelerine ve belki de sonuçta başarılı olmalarına neden olunabilir. Aşağıdaki satırlar /etc/security/limits.conf dosyasına eklendiği takdirde root kullanıcı haricindeki kullanıcılar maksimum 20 tane proses açabilecek ve 5 MB bellek kullanabileceklerdir. 
+
+hard core 0 
+hard rss 5000 
+hard nproc 20 
+
+Ardından bu özelliği aktif hale geçirmek için kullanıcılar sisteme bağlanırken kullanılan /etc/pam.d/login betiğine bu özelliğin belirtilmesi gereklidir. Sonuçta bu dosya aşağıdaki gibi olacaktır. 
+
+#%PAM-1.0 
+auth required /lib/security/pam_securetty.so 
+auth required /lib/security/pam_pwdb.so shadow 
+auth required /lib/security/pam_nologin.so 
+account required /lib/security/pam_pwdb.so 
+password required /lib/security/pam_cracklib.so 
+password required /lib/security/pam_pwdb.so nullok 
+session required /lib/security/pam_pwdb.so 
+session required /lib/security/pam_limits.so 
+ 
+
+Güvenlik Kontrollerinin Devamlılığını Sağlamak
+
+ 
+
+Kaynakların azaltılması:
+
+Gerekmeyen veya kullanılmayan yazılımların kaldırılması
+Kullanılmayan kullanıcı hesaplarının engellenmesi ve kaldırılması, hesapların kullanımı ile ilgili düşük yetki kuralını uygulamak( Principle of Least Privilege)
+Erişim kontrolü için default deny kuralını uygulayarak özellikle izin verilenler dışında diğerlerinin erişimini engellemek. Bu kural dosya izinleri, firewall kuralları ve verilere erişim gibi kontroller için uygulanabilir.
+Yazılım ve işletim sistemlerine ait banner ve versiyon bilgilerini saklayarak bunlara özel zafiyetlerin tespit edilip istismar edilmesini önlemeye çalışmak
+ 
+
+Yeni güvenlik ayarlarını eklemek:
+
+Sistem sıkılaştırma işlemleri uygulanırken hem tespit edici hem de önleyici güvenlik ölçümlerini eklemek
+Kernel güvenliğini sağlamak, bunun için kullanılan iki yöntem:
+Kernel compilation: Kaynak kodunun modifiye edilip dahil edilecek modüller/sürücüler/özelliklerin eklenerek compile işleminin gerçekleştirilmesi
+sysctl komutu ve bağlantılı /proc dosya sisteminin kullanılarak güvenliğin sağlanması
+  Ağ filtreleme için kullanılan iki yöntem:
+Ağ sistemlerinizle etkileşime geçmek isteyen dış sistemler için erişim ve yetki kontrolü
+İç ağdan dış ağla iletişim isteklerini denetlemek
+Dışa açık olması gerekmeyen ağ servisleri için kullanılan 127.0.0.1 adresli localhost arayüzünü kullanmak
+Mail transfer ajanı olarak kullanılabilen bileşenleri şifreleme, spam filtrelemesi ve kara liste gibi önlemler ile güvenliğini arttırmak
+Özellikle bir ağ portu üzerinde dinleme yapan default ayarlarında bırakmayarak sıkılaştırma işlemlerini en etkili şekilde uygulamak, detaylar:
+Uygulamanın güvenli konfigürasyonuyla ilgili dökümanlarını gözden geçirerek ayar yapmak
+Mümkün olduğu durumlarda ağ servislerini kısıtlamak
+Dışa açık olmayan ağ servisleri için localhost bağlantılarını kullanmak
+Default kullanıcıları engellemek
+Kimlik doğrulama servisini uygulamak
+Güçlü parolalar kullanmak
+ 
+
+Sistemlerin Erişilebilirliği ve Sürekliliği:
+
+Sistemlerin erişilebilirlik sorunlarının anında tespiti ve müdahalesi için izleme araçları yapılandırmak
+Sistemlerin çökmesi durumunda eski haline döndürülebilmelerini sağlamak için gerek yedekleri düzenli ve tam bir şekilde almak, geri yüklemeleri test etmek ve sistem monitoring uygulayarak izlemeye almak
+Özellikle güvenlikle ilgili paketler için otomatik güncelleme seçeneğini devreye almak, kernel güncellendiğinde reboot işlemini yapmayı ihmal etmemek, reboot işleminin kesintiye uğramaması gereken servisleri sunan cihazlarda sorun çıkarması ihtimali varsa live kernel patching uygulamak
+Sistemleri otomatize denetleme araçlarıyla sürekli bir izlemeye almak, kontrolleri otomatikleştirmek, sıkılaştırma ile denetleme(audit) işlemlerini bir arada ve etkili bir şekilde yürütmek
+Linux Sunucu Sıkılaştırma Kontrol Listesi
+
+ 
+
+Fiziksel sistem güvenliği: CD/DVD ya da harici aygıtlardan boot işlemlerini engelleyecek şekilde BIOS’u yapılandırmak, BIOS parolası oluşturmak ve fiziksel erişimi önlemek için GRUB özelliğini de parola ile korumak
+Disk Bölümleri: Sistemde farklı disk bölümleri oluşturmak datanın gruplanmasına yardımcı olmakta ve diskin herhangi bir bölümünde meydana gelecek bir sorun sadece o bölümü etkilemektedir. Linux sistemlerde uygulanması gereken kritik öneme sahip disk bölümleri aşağıdaki gibidir, üçüncü parti uygulamaların /opt bölümü altındaki farklı dosya sistemlerinde kurulması gerektiğini unutmamalıyız:
+/
+/boot
+/usr
+/var
+/home
+/tmp
+/opt
+ 
+
+Gereksiz paketlerin kurulumundan kaçınarak zafiyetlere neden olabilecek servislerin çalışmasının önüne geçmek, sadece gereken servislerin çalıştığından emin olmalıyız
+İstenmeyen ağ servislerini tespit edip engellemek için açık portları ve bunlara bağlı uygulamaları gözden geçirmek
+Sunucuya erişimlerde SSH protokolünü kullanmak; gerekli olmadığı sürece direkt root olarak login olmamak; sudo komutu ile işlemleri yapmak; SSH portunu yüksek numaraları başka bir port numarası ile değiştirmek; SSH konfigürasyon dosyasında root logini engelleme, sadece belirlenmiş kullanıcılara erişim izni vermek, SSH son sürümünü kullanmak
+Sistemleri tüm bileşenleriyle sürekli güncel tutmak
+Cron konfigürasyon dosyalarında gerekli değişiklikleri yaparak hangi kullanıcıların Cron’u kullanabileceğini hangilerine kullanım izni verileceğini belirlemek
+USB’lerin algılanmasını engellemek için ayarları yapmak
+Linux’un kernel düzeyinde sağlanan zorunlu erişim kontrol mekanizması Security-Enhanced Linux (SELinux) devreye alınması
+Güvenlik ve performansı arttırmak için KDE ve GNOME gibi X Windows sistemlerini kaldırmak veya engellemek
+IPv6 protokolünü kullanmıyorsanız devre dışı bırakmanız önerilmektedir.
+PAM gibi çözümlerle kullanıcıların eski parolaları kullanmalarını engellemek
+Parola geçerlilik sürelerini denetlemek
+Yetkisiz erişimleri ve sunucuya gelen giden trafiği güvenlik açısından denetlemek için yeni nesil güvenlik duvarı çözümleri uygulamak
+Sistemi yeniden başlatmaya yarayan ‘CTRL-ALT-DELETE’ tuş kombinasyonunu sunucular için devre dışı bırakmak
+Boş parolalı hesapları tespit etmek
+Kullanıcı davranışlarını şüpheli aktiviteler açısından izlemek
+Sunucu üzerinde veya ağla etkileşiminde yaşanan ve güvenlik riski arz eden aktiviteleri tespit ederek alarm oluşturulmasını sağlamak ve aynı zamanda logların silinmesi veya değiştirilmesini saptamak/önlemek için log analiz araçları ve SIEM çözümlerini etkili bir şekilde kullanmak
+Tek hata noktası(Single Point of Failure) problemlerini elimine etmek adına NIC Bonding ayarlarını yapmak
+Kritik boot dosyalarının yetkisiz değiştirilmesini önlemek için varsayılan olarak read-write olan /boot dizinini read-only olarak ayarlamak
+ICMP veya Broadcast isteklerini engellemek
+Web sunucularında güvenli ve şifreli iletişim sağlayan SSL/TLS sertifikasyonunu uygulamak
+Web servisi olarak Apache/PHP/Nginx sunucularının güvenliğinin sağlanması
+Dosyaların, dizinlerin ve email servisinin güvenliğini sağlamak
+Özellikle yetkisiz erişimlere kapalı olması gereken kritik dosyaların herkes için yazma izinli olanlarını tespit etmek ve bu dosyaların izinlerini doğru bir şekilde yapılandırmak
+Runtime esnasında kernel parametrelerini ayarlayan ve boot işlemi yapılırken Linux’un ayarları okuyup aldığı sysctl bileşeninin güvenli bir şekilde yapılandırılması
+Belli bir sayıyı geçen başarısız login girişimlerini tespit ederek kullanıcıyı bloklamak
+Bilgisayar başında olunmadığı sürede otomatik kapanma ayarlarını kritik yetkilere sahip root kullanıcıları için uygulamak
+Aşağıda sıralanmış kritik öneme sahip ana sistem dosyaları için root izinlerini ayarlamak:
+Anacrontab
+Crontab
+Cron.hourly
+Cron.daily
+Cron.weekly
+Cron.monthly
+Cron.d
+Passed
+Group
+Shadow
+Gshadow
+FTP kapatıp SFTP kullanmak
+Kerberos gibi bir merkezi kimlik doğrulama sistemi uygulamak
+Uygulamaları kısıtlı bir kaynak kullanımına sınırlayarak potansiyel saldırıların yapacağı etkiye karşı için izolasyon sağlamak
+Antivirüs ve antimalware çözümlerini uygulamak
+Rootkit tespit edici uygulamaları kullanmak
+Kurulan uygulamaları denetlemek
+Root olmayan kullanıcıların UID değerinin 0 olmamasına dikket etmek, çünkü UID 0 değeri tam yetkili erişime izin verdiği için sadece rootların kullanması gerekmektedir.
+Kullanılan Linux distrosunun kullanım süresinin dolması dolayısıyla desteğin çekilmesi gibi duyuruları takip ederek kullanım süresi dolmadan önce sunucuya yeni Linux versiyonuna geçirmek
+Sıkılaştırma işlemi yapan ve sistemin güvenlik sıkılaştırma durumuyla ilgili rapor sunan çözümleri kullanmak
