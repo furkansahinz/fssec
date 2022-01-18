@@ -16,13 +16,6 @@ Eğer sunucuda maksimum güvenlik gerekli ise, Xwindows bileşenlerinin kurulmam
 
 Elinizdeki Linux sürümünü çok iyi tanımalı, eğer ihtiyacınız olan sunucu yazılımlar bu sürüm ile birlikte geliyorsa onları sisteminize kurmadan önce versiyonları hakkında ayrıntılı bilgi edinmelisiniz. Örnek vermek gerekirse: Red Hat Linux 6.2 işletim sistemi kurulacaksa, bu sürüm ile birlikte gelen FTP sunucu paketi olan wu-ftpd-2.6.0 paketinde bulunan bazı güvenlik açıkları ve bunlardan faydalanan exploitler nedeni ile yeni kurduğunuz Linux sunucu birkaç dakika içinde kötü niyetli bir kişi tarafından ele geçirilebilir. Tavsiyemiz, az önce hazırlamanızı tavsiye ettiğimiz sunucunun görevi başlıklı listenize sizin için gerekli olacak yazılımlar listesini de ekleyerek sırası ile bu yazılımların Internet’teki ana sayfalarına göz atmanızdır. Örneğin az önce söz ettiğimiz Red Hat 6.2’ deki güvenlik boşluğuna karşı wu- ftpd-2.6.1 sürümü kullanılmasının gerekliliği, sitenin ana sayfasında önemle duyurulmaktadır. 
 
-Şimdi, Linux sunucularda yaygın olarak kullanılan bazı ağ servisleri ve bunlar hakkında en güncel bilgilerin bulunduğu Internet sitelerini listeleyelim. 
- 
-
-
-
-Yukarıdaki web sitelerini ziyaret ederken, elinizdeki Linux sürümündeki yazılımların versiyonlarını kontrol ettiğinizde büyük ihtimalle en son sürüme sahip olmadığınızı göreceksiniz. Bu aşamada en doğru hareket, ilgili paketin tar.gz uzantılı kaynak kodunu sunucu makineye kopyalayıp, kodu derlemektir. Pek çoğumuza zahmetli gelen kod derlemeye başvurmamızın nedeni, yazılımların kaynak kod olarak dağıtılması ile rpm veya deb paketi olarak dağıtılmasına başlanması arasında geçen sürede sunucumuzun tehdit edilmesini istemememizdir. 
-
 Güvenliği maksimize etmek için bir diğer önemli nokta da makinede C, C++ derleyici bulundurulmamasıdır. Eğer ileride bir gün gerekirse geçici olarak kurulması ve ardından tekrar kaldırılması doğru olacaktır. Bunun nedeni, makineye erişen kullanıcıların işletim sistemine zarar verebilecek bazı kodları derlemesini engellemektir. Ayrıca, çekirdek (kernel) kaynak kodunun da sistemde bulunması bazı tehlikeler ortaya çıkarabilir. Bunun nedeni ise bazı alt seviye güvenlik kırıcı programların kernel’ daki C++ başlık dosyalarını kullanarak sistemde root kullanıcı hakkına sahip olmayı başarmasıdır. Bunu engellemek için en iyi yol, Linux çekirdeğinin kaynak kodunun sistemde bulunmamasıdır. 
 
 Kurulduktan sonra silinecek bileşenler. 
