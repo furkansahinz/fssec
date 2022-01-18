@@ -272,3 +272,6 @@ Kurulan uygulamaları denetlemek
 Root olmayan kullanıcıların UID değerinin 0 olmamasına dikket etmek, çünkü UID 0 değeri tam yetkili erişime izin verdiği için sadece rootların kullanması gerekmektedir.
 Kullanılan Linux distrosunun kullanım süresinin dolması dolayısıyla desteğin çekilmesi gibi duyuruları takip ederek kullanım süresi dolmadan önce sunucuya yeni Linux versiyonuna geçirmek
 Sıkılaştırma işlemi yapan ve sistemin güvenlik sıkılaştırma durumuyla ilgili rapor sunan çözümleri kullanmak
+
+Kaynak1:https://linux-audit.com/how-to-secure-linux-systems-auditing-hardening-and-security/
+Kaynak2:https://www.tecmint.com/linux-server-hardening-security-tips/
