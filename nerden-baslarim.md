@@ -1,4 +1,4 @@
-# Siber Güvenliğe nereden ve nasıl başlarım?
+# Siber Güvenliğe nereden ve nasıl başlarım??
 
 Öncelikle python, js, sql ve temel algoritma bilgisi gerekli.
 Kendine en uygun youtube kanalı veya udemy kursu seçerek başlayabilirsin.
